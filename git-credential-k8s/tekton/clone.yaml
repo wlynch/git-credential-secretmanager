@@ -1,0 +1,17 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: git
+spec:
+  taskSpec:  
+    steps:
+      - name: git
+        image: gcr.io/wlynch-test/git-k8s:test
+        env:
+          - name: GIT_K8S_SECRET
+            value: github-pat
+        script: |
+          git config --global credential.https://github.com.helper k8s
+          git clone https://github.com/wlynch/private.git
+          find .
